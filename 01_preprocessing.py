@@ -5,7 +5,10 @@ Simulates preprocessing step with 8-second execution time
 """
 import time
 import json
+import os
 from utils.config import CONFIG
+
+SCRIPT_NAME = os.path.splitext(os.path.basename(__file__))[0]
 
 
 def main():
@@ -31,6 +34,15 @@ def main():
     for i in range(8):
         print(f"  Preprocessing... {i+1}/8 seconds elapsed")
         time.sleep(1)
+
+    # Create output txt file in outDir
+    if "outDir" in CONFIG:
+        out_dir = CONFIG["outDir"]
+        os.makedirs(out_dir, exist_ok=True)
+        output_file = os.path.join(out_dir, f"{SCRIPT_NAME}.txt")
+        with open(output_file, "w") as f:
+            f.write(f"{SCRIPT_NAME} completed successfully\n")
+        print(f"\n[Output file created: {output_file}]")
 
     print("\n[01_preprocessing.py completed successfully]")
     print("=" * 60)
